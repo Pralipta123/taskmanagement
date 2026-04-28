@@ -1,0 +1,87 @@
+<div class="page">
+  <header class="page-header">
+    <div class="page-header-text">
+      <p class="eyebrow">Workspace</p>
+      <h1>Tasks</h1>
+      <p class="lede">Search by title, narrow by assignee or status, then open a row for the full record.</p>
+    </div>
+    <a routerLink="/tasks/new" class="btn primary btn-add">
+      <span class="btn-add-icon" aria-hidden="true">+</span>
+      Add task
+    </a>
+  </header>
+
+  <section class="stats" *ngIf="!loading" aria-label="Filtered task summary">
+    <article class="stat stat-total">
+      <span class="stat-value">{{ stats.total }}</span>
+      <span class="stat-label">Matching</span>
+    </article>
+    <article class="stat stat-pending">
+      <span class="stat-value">{{ stats.pending }}</span>
+      <span class="stat-label">Pending</span>
+    </article>
+    <article class="stat stat-active">
+      <span class="stat-value">{{ stats.inProgress }}</span>
+      <span class="stat-label">In progress</span>
+    </article>
+    <article class="stat stat-done">
+      <span class="stat-value">{{ stats.completed }}</span>
+      <span class="stat-label">Completed</span>
+    </article>
+  </section>
+
+  <section class="card filters" [formGroup]="filterForm">
+    <div class="filters-head">
+      <h2 class="filters-title">Filters</h2>
+      <p class="filters-hint">Updates apply instantly; search waits briefly while you type.</p>
+    </div>
+    <div class="filters-grid">
+      <div class="field">
+        <label for="q">Search by title</label>
+        <input id="q" type="search" formControlName="search" placeholder="e.g. dashboard, API…" />
+      </div>
+      <div class="field">
+        <label for="assignee">Assignee</label>
+        <select id="assignee" formControlName="assignee">
+          <option value="">All assignees</option>
+          <option *ngFor="let u of assigneeOptions()" [value]="u.id">{{ u.name }}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="status">Status</label>
+        <select id="status" formControlName="status">
+          <option value="">All statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <section class="card table-card">
+    <div class="table-toolbar">
+      <div>
+        <h2 class="table-title">Task queue</h2>
+        <p class="table-sub">
+          Page {{ page }} of {{ totalPages() }} · {{ pageSize }} per page
+        </p>
+      </div>
+      <span class="table-count" *ngIf="totalFiltered > 0">{{ totalFiltered }} shown</span>
+    </div>
+    <app-data-table
+      [columns]="columns"
+      [rows]="tableRows"
+      [sortColumn]="sortColumn"
+      [sortDirection]="sortDirection"
+      [page]="page"
+      [pageSize]="pageSize"
+      [totalItems]="totalFiltered"
+      [loading]="loading"
+      emptyMessage="No tasks match your filters."
+      (sortChange)="onSort($event)"
+      (pageChange)="onPageChange($event)"
+      (rowActivate)="openRow($event)"
+    ></app-data-table>
+  </section>
+</div>

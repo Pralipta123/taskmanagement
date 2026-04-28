@@ -1,0 +1,61 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.55);
+  animation: tm-fade-in 0.18s ease-out;
+}
+
+.dialog {
+  width: min(440px, 100%);
+  background: var(--tm-surface);
+  border-radius: var(--tm-radius-lg);
+  border: 1px solid var(--tm-border);
+  box-shadow: var(--tm-shadow-lg);
+  padding: 1.35rem 1.5rem 1.25rem;
+  animation: tm-pop-in 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.message {
+  margin: 0 0 1.35rem;
+  color: var(--tm-text);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+@keyframes tm-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tm-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

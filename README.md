@@ -1,27 +1,117 @@
-# Taskmanagement
+# Task Management System
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+A responsive **Angular 16** application for managing tasks assigned to employees or teams. It includes a searchable task list, reactive add/edit forms, task detail views with mocked activity history, and reusable UI building blocks.
 
-## Development server
+## Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### Task list (`/tasks`)
 
-## Code scaffolding
+- Table columns: **Task title**, **Assigned to**, **Priority** (High / Medium / Low), **Status** (Pending / In Progress / Completed), **Due date**, **Created date**
+- **Search** by title (debounced)
+- **Filters** by assignee and status
+- **Sortable** columns
+- **Pagination** (5 tasks per page)
+- Summary counts for the current filter set (matching, pending, in progress, completed)
+- Row click opens the **task detail** page
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Add / edit task (`/tasks/new`, `/tasks/:id/edit`)
 
-## Build
+- **Reactive forms** with validation (required title, length limits, required assignee and dates)
+- **Cross-field rule:** due date cannot be before start date
+- **Error handling** for load failures and simulated save failures
+- **Edit** loads existing task data from the in-memory store (with optional `localStorage` persistence)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Task detail (`/tasks/:id`)
 
-## Running unit tests
+- Full task fields
+- **Assignee** profile (name, role, department, email)
+- **Activity history** (mocked timeline from the service)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Architecture highlights
 
-## Running end-to-end tests
+- **Lazy-loaded** `TasksModule` under `/tasks`
+- **`TaskExistsGuard`** on detail and edit routes when an `:id` is present
+- **`TaskService`** with RxJS streams (`BehaviorSubject` + `shareReplay` for the task list), async-style `Observable` APIs, and optional simulated network errors on save
+- **Reusable components:** `app-data-table`, `app-confirm-dialog` (+ service), `app-status-badge`, `app-form-field`
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Tech stack
 
-## Further help
+- [Angular](https://angular.io/) 16
+- [RxJS](https://rxjs.dev/) 7
+- TypeScript 5.1
+- CSS (design tokens, responsive layout)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Getting started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- npm (bundled with Node)
+
+### Install
+
+```bash
+npm install
+```
+
+### Development server
+
+```bash
+npm start
+```
+
+Or:
+
+```bash
+npx ng serve
+```
+
+Open **http://localhost:4200/** — the app redirects to `/tasks`.
+
+### Production build
+
+```bash
+npm run build
+```
+
+Output is written to `dist/taskmanagement/`.
+
+### Unit tests
+
+```bash
+npm test
+```
+
+## Project structure (high level)
+
+```
+src/app/
+├── app.component.*          # App shell, navigation, global confirm dialog host
+├── app-routing.module.ts    # Lazy route to tasks feature
+├── core/
+│   ├── guards/               # TaskExistsGuard
+│   ├── models/               # Task, user, table column types
+│   ├── services/             # TaskService (CRUD + mock users/activities)
+│   └── validators/           # Due-after-start validator
+├── features/tasks/
+│   ├── task-list/            # List, filters, sort, pagination
+│   ├── task-form/            # Create / edit reactive form
+│   ├── tasks-routing.module.ts
+│   └── tasks.module.ts
+└── shared/
+    ├── components/           # Data table, dialog, badge, form field
+    ├── services/             # ConfirmDialogService
+    └── shared.module.ts
+```
+
+## Assignment / submission checklist
+
+Typical coursework deliverables:
+
+1. **GitHub repository** — push this project to a public or private repo as required by your instructor.
+2. **README** — this file (overview, how to run, features).
+3. **Short screen recording (2–3 minutes)** — walk through: list (search, filter, sort, pagination), create or edit a task (validation + date rule), open detail, optional delete with confirm dialog.
+
+## License
+
+Private / educational use unless you add your own license.

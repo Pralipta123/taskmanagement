@@ -1,0 +1,80 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <a routerLink="/tasks" class="back">← Back to tasks</a>
+      <p class="eyebrow">{{ taskId ? 'Edit' : 'Create' }}</p>
+      <h1>{{ pageTitle }}</h1>
+      <p class="lede">All fields use reactive validation. Dates are checked so due is never before start.</p>
+    </div>
+  </header>
+
+  <div class="banner error" *ngIf="loadError" role="alert">{{ loadError }}</div>
+  <div class="banner error" *ngIf="saveError" role="alert">{{ saveError }}</div>
+  <div class="banner error" *ngIf="form.errors?.['dateOrder'] && form.touched" role="alert">
+    Due date cannot be before the start date.
+  </div>
+
+  <form class="card form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <section class="form-section">
+      <h2 class="section-title">Basics</h2>
+      <p class="section-hint">Title and context people will see in the list and detail views.</p>
+      <app-form-field label="Task title" [control]="form.controls.title">
+        <input type="text" formControlName="title" autocomplete="off" placeholder="Short, action-oriented title" />
+      </app-form-field>
+
+      <app-form-field
+        label="Description"
+        hint="Optional context for assignees."
+        [control]="form.controls.description"
+      >
+        <textarea formControlName="description" rows="4" placeholder="Scope, links, acceptance criteria…"></textarea>
+      </app-form-field>
+    </section>
+
+    <section class="form-section">
+      <h2 class="section-title">Ownership &amp; workflow</h2>
+      <p class="section-hint">Who owns delivery and where it sits in your pipeline.</p>
+      <app-form-field label="Assigned to" [control]="form.controls.assigneeId">
+        <select formControlName="assigneeId">
+          <option value="" disabled>Select a person or team lead</option>
+          <option *ngFor="let u of assignees()" [value]="u.id">{{ u.name }} — {{ u.department }}</option>
+        </select>
+      </app-form-field>
+
+      <div class="grid-2">
+        <app-form-field label="Priority" [control]="form.controls.priority">
+          <select formControlName="priority">
+            <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+          </select>
+        </app-form-field>
+
+        <app-form-field label="Status" [control]="form.controls.status">
+          <select formControlName="status">
+            <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+          </select>
+        </app-form-field>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <h2 class="section-title">Schedule</h2>
+      <p class="section-hint">Start and due dates drive ordering and validation together.</p>
+      <div class="grid-2">
+        <app-form-field label="Start date" [control]="form.controls.startDate">
+          <input type="date" formControlName="startDate" />
+        </app-form-field>
+
+        <app-form-field label="Due date" [control]="form.controls.dueDate">
+          <input type="date" formControlName="dueDate" />
+        </app-form-field>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button type="button" class="btn ghost" (click)="cancel()" [disabled]="saving">Cancel</button>
+      <button type="submit" class="btn primary" [disabled]="saving">
+        {{ saving ? 'Saving…' : 'Save task' }}
+      </button>
+    </div>
+  </form>
+</div>

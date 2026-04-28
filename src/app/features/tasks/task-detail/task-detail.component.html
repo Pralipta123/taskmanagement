@@ -1,0 +1,75 @@
+<div class="page">
+  <ng-container *ngIf="vm$ | async as vm">
+    <div *ngIf="errorMessage(vm) as err" class="banner error">{{ err }}</div>
+
+    <p *ngIf="isMissing(vm)" class="muted">Task not found.</p>
+
+    <ng-container *ngIf="readyView(vm) as d">
+      <header class="page-header">
+        <div>
+          <a routerLink="/tasks" class="back">← Back to tasks</a>
+          <h1>{{ d.task.title }}</h1>
+          <div class="badges">
+            <app-status-badge kind="priority" [value]="d.task.priority"></app-status-badge>
+            <app-status-badge kind="task-status" [value]="d.task.status"></app-status-badge>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="btn ghost" (click)="edit(d.task.id)">Edit</button>
+          <button
+            type="button"
+            class="btn danger"
+            (click)="askDelete(d.task)"
+            [disabled]="deleting"
+          >
+            {{ deleting ? 'Deleting…' : 'Delete' }}
+          </button>
+        </div>
+      </header>
+
+      <section class="card">
+        <h2>Details</h2>
+        <dl class="grid-dl">
+          <dt>Description</dt>
+          <dd>{{ d.task.description || '—' }}</dd>
+          <dt>Start date</dt>
+          <dd>{{ d.task.startDate | date : 'mediumDate' }}</dd>
+          <dt>Due date</dt>
+          <dd>{{ d.task.dueDate | date : 'mediumDate' }}</dd>
+          <dt>Created</dt>
+          <dd>{{ d.task.createdAt | date : 'medium' }}</dd>
+        </dl>
+      </section>
+
+      <div class="layout-split">
+        <section class="card">
+          <h2>Assigned user</h2>
+          <div class="user-card" *ngIf="d.assignee as u; else noUser">
+            <p class="user-name">{{ u.name }}</p>
+            <p class="user-meta">{{ u.role }} · {{ u.department }}</p>
+            <a class="link" [href]="'mailto:' + u.email">{{ u.email }}</a>
+          </div>
+          <ng-template #noUser>
+            <p class="muted">No assignee on file.</p>
+          </ng-template>
+        </section>
+
+        <section class="card">
+          <h2>Activity history</h2>
+          <ul class="timeline" *ngIf="d.activities.length; else noAct">
+            <li *ngFor="let a of d.activities">
+              <div class="dot"></div>
+              <div class="body">
+                <p class="action">{{ a.action }}</p>
+                <p class="meta">{{ a.actorName }} · {{ a.at | date : 'short' }}</p>
+              </div>
+            </li>
+          </ul>
+          <ng-template #noAct>
+            <p class="muted">No activity recorded yet.</p>
+          </ng-template>
+        </section>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

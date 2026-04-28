@@ -1,0 +1,10 @@
+<div class="form-field" [class.invalid]="showErrors()">
+  <label class="label" *ngIf="label">{{ label }}</label>
+  <div class="control">
+    <ng-content></ng-content>
+  </div>
+  <p class="hint" *ngIf="hint && !showErrors()">{{ hint }}</p>
+  <ul class="errors" *ngIf="showErrors()">
+    <li *ngFor="let msg of errorMessages()">{{ msg }}</li>
+  </ul>
+</div>

@@ -1,0 +1,76 @@
+<div class="table-wrap" role="region" [attr.aria-busy]="loading">
+  <div class="loading" *ngIf="loading">Loading…</div>
+
+  <table class="data-table" *ngIf="!loading">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let col of columns"
+          [class.sortable]="col.sortable"
+          (click)="onSort(col)"
+          scope="col"
+        >
+          <span class="th-inner">
+            {{ col.label }}
+            <span class="sort-ind" *ngIf="col.sortable">{{ sortIcon(col.key) }}</span>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="rows.length === 0">
+        <td [attr.colspan]="columns.length || 1" class="empty">{{ emptyMessage }}</td>
+      </tr>
+      <tr
+        *ngFor="let row of rows; trackBy: trackRow"
+        (click)="rowActivate.emit(row)"
+        (keyup.enter)="rowActivate.emit(row)"
+        tabindex="0"
+        class="data-row"
+      >
+        <td *ngFor="let col of columns">
+          <ng-container [ngSwitch]="columnType(col)">
+            <span *ngSwitchCase="'text'">{{ cellValue(row, col.key) }}</span>
+            <span *ngSwitchCase="'date'">{{ asDatePipeInput(cellValue(row, col.key)) | date : 'mediumDate' }}</span>
+            <app-status-badge
+              *ngSwitchCase="'priority'"
+              kind="priority"
+              [value]="asString(cellValue(row, col.key))"
+            ></app-status-badge>
+            <app-status-badge
+              *ngSwitchCase="'status'"
+              kind="task-status"
+              [value]="asString(cellValue(row, col.key))"
+            ></app-status-badge>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pager" *ngIf="!loading && totalItems > pageSize">
+    <button type="button" class="btn ghost" (click)="goPage(page - 1)" [disabled]="page <= 1">
+      Previous
+    </button>
+    <div class="page-btns">
+      <button
+        type="button"
+        *ngFor="let p of pages()"
+        class="btn page"
+        [class.active]="p === page"
+        (click)="goPage(p)"
+      >
+        {{ p }}
+      </button>
+    </div>
+    <button
+      type="button"
+      class="btn ghost"
+      (click)="goPage(page + 1)"
+      [disabled]="page >= totalPages()"
+    >
+      Next
+    </button>
+    <span class="page-meta">{{ totalItems }} total</span>
+  </div>
+</div>

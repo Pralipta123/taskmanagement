@@ -1,0 +1,16 @@
+<div class="backdrop" *ngIf="state.open" role="presentation" (click)="cancel()">
+  <div
+    class="dialog"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'confirm-title'"
+    (click)="$event.stopPropagation()"
+  >
+    <h2 id="confirm-title" class="title">{{ state.title }}</h2>
+    <p class="message">{{ state.message }}</p>
+    <div class="actions">
+      <button type="button" class="btn ghost" (click)="cancel()">Cancel</button>
+      <button type="button" class="btn primary" (click)="confirm()">Confirm</button>
+    </div>
+  </div>
+</div>

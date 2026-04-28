@@ -1,0 +1,141 @@
+.table-wrap {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 0;
+  border: none;
+  background: var(--tm-surface);
+}
+
+.loading {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  color: var(--tm-muted);
+  font-weight: 500;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--tm-border);
+  vertical-align: middle;
+}
+
+.data-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--tm-surface-2);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tm-muted);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--tm-border-strong);
+}
+
+.data-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.data-table th.sortable:hover {
+  color: var(--tm-text);
+  background: #eef2ff;
+}
+
+.th-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sort-ind {
+  font-size: 0.7rem;
+  opacity: 0.65;
+  font-weight: 700;
+}
+
+.data-row {
+  cursor: pointer;
+  transition: background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.data-row:nth-child(even) {
+  background: rgba(248, 250, 252, 0.55);
+}
+
+.data-row:hover {
+  background: var(--tm-row-hover);
+}
+
+.data-row:focus-visible {
+  outline: none;
+  background: var(--tm-row-hover);
+  box-shadow: inset 0 0 0 2px rgba(79, 70, 229, 0.35);
+}
+
+.data-table td.empty {
+  text-align: center;
+  color: var(--tm-muted);
+  padding: 2.5rem 1rem;
+  font-weight: 500;
+}
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.85rem 1.1rem;
+  border-top: 1px solid var(--tm-border);
+  background: linear-gradient(180deg, var(--tm-surface-2) 0%, #fff 100%);
+}
+
+.page-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.btn.page {
+  min-width: 2.25rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.82rem;
+  border-radius: 8px;
+}
+
+.btn.page.active {
+  background: var(--tm-primary);
+  color: #fff;
+  border-color: var(--tm-primary);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+.page-meta {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--tm-muted);
+}
+
+@media (max-width: 640px) {
+  .data-table th,
+  .data-table td {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  .page-meta {
+    width: 100%;
+    margin-left: 0;
+  }
+}

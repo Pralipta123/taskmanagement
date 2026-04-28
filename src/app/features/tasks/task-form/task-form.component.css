@@ -1,0 +1,138 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.25rem 1.35rem 3rem;
+}
+
+.page-header {
+  margin-bottom: 1.25rem;
+}
+
+.page-header h1 {
+  margin: 0.35rem 0 0.4rem;
+  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tm-accent);
+}
+
+.lede {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--tm-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 0.65rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--tm-primary);
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.banner {
+  padding: 0.75rem 1rem;
+  border-radius: var(--tm-radius);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.banner.error {
+  background: linear-gradient(180deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.form {
+  padding: 0.25rem 0 0.25rem;
+  border-radius: var(--tm-radius-lg);
+  box-shadow: var(--tm-shadow);
+}
+
+.form-section {
+  padding: 1.15rem 1.35rem 1.35rem;
+  border-bottom: 1px solid var(--tm-border);
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.section-hint {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: var(--tm-muted);
+  line-height: 1.45;
+}
+
+.form :is(input, select, textarea) {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid var(--tm-border);
+  font: inherit;
+  font-size: 0.95rem;
+  background: #fff;
+  color: var(--tm-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form :is(input, select, textarea):hover {
+  border-color: var(--tm-border-strong);
+}
+
+.form :is(input, select, textarea):focus-visible {
+  outline: none;
+  border-color: var(--tm-primary);
+  box-shadow: 0 0 0 3px var(--tm-focus);
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0 1rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 1rem 1.35rem 1.35rem;
+  background: var(--tm-surface-2);
+  border-top: 1px solid var(--tm-border);
+  border-radius: 0 0 var(--tm-radius-lg) var(--tm-radius-lg);
+}
+
+@media (max-width: 560px) {
+  .actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}

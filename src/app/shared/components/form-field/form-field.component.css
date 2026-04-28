@@ -1,0 +1,39 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.05rem;
+}
+
+.label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--tm-text);
+  letter-spacing: 0.01em;
+}
+
+.control {
+  border-radius: 10px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--tm-muted);
+  line-height: 1.4;
+}
+
+.errors {
+  margin: 0;
+  padding: 0.5rem 0.65rem 0.5rem 1.1rem;
+  border-radius: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.form-field.invalid .label {
+  color: #b91c1c;
+}
