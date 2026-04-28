@@ -104,6 +104,17 @@ This app is a **client-side SPA** with the **HTML5 router**. Hosting must:
 
   Use your real repository name in place of `taskmanagement`. Publish the contents of `dist/taskmanagement/`.
 
+**GitHub Actions → GitHub Pages**
+
+Workflow: [`.github/workflows/github-pages.yml`](.github/workflows/github-pages.yml). On push to **`main`** or **`master`** (or manual **Run workflow**), it runs **`npm ci`**, production **`ng build`** with **`--base-href /<repo-name>/`**, copies **`index.html`** to **`404.html`** for SPA routes, adds **`.nojekyll`**, uploads **`dist/taskmanagement`**, and deploys to Pages.
+
+1. Push the workflow file to GitHub.
+2. **Settings → Pages →** set **Source** to **GitHub Actions**.
+3. Open **Actions** and wait for a green **Deploy to GitHub Pages** run.
+4. Visit **`https://<username>.github.io/<repository-name>/`** (repo name = URL path).
+
+Requires **`package-lock.json`** committed for **`npm ci`**. If the app is not at the repo root, add **`defaults.run.working-directory`** in the workflow. User/org site (`username.github.io` repo) needs **`--base-href /`**, not `/<repo>/` — adjust the build step if that applies.
+
 **Common “not deploying” causes**
 
 | Symptom | Fix |

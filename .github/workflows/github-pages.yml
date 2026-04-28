@@ -1,0 +1,69 @@
+# Deploy this Angular SPA to GitHub Pages.
+#
+# One-time GitHub setup:
+#   Repo → Settings → Pages → Build and deployment → Source: "GitHub Actions"
+#
+# Site URL (project pages): https://<owner>.github.io/<repository-name>/
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Base href must match the repo segment in the GitHub Pages URL.
+      - name: Build (production + GitHub Pages base href)
+        run: npm run build -- --configuration production --base-href /${{ github.event.repository.name }}/
+
+      # GitHub Pages returns 404.html for unknown paths; copy SPA shell so deep links load the app.
+      - name: SPA fallback (404.html)
+        run: cp dist/taskmanagement/index.html dist/taskmanagement/404.html
+
+      # Disable Jekyll so files like those under chunks/ are served as-is.
+      - name: Disable Jekyll
+        run: touch dist/taskmanagement/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/taskmanagement
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
