@@ -76,6 +76,43 @@ npm run build
 
 Output is written to `dist/taskmanagement/`.
 
+### Deploy (static hosting)
+
+This app is a **client-side SPA** with the **HTML5 router**. Hosting must:
+
+1. Run **`npm run build`** (production).
+2. Publish the folder **`dist/taskmanagement`** (not `dist/`).
+3. **Rewrite all routes to `index.html`** so `/tasks/123` works on refresh (see configs below).
+
+**Netlify**
+
+- Connect the repo, set **Base directory** to this folder if your Git root is the parent directory (e.g. only `taskmanagement/` contains `package.json`).
+- This repo includes `netlify.toml`: build `npm run build`, publish `dist/taskmanagement`, SPA redirect to `index.html`.
+
+**Vercel**
+
+- Import the project; if the repo root is not this app folder, set **Root Directory** to `taskmanagement` (or wherever `angular.json` lives).
+- `vercel.json` sets `outputDirectory` and SPA rewrites.
+
+**GitHub Pages** (project site `https://<user>.github.io/<repo>/`)
+
+- Build with a matching base href, for example:
+
+  ```bash
+  npx ng build --base-href /taskmanagement/
+  ```
+
+  Use your real repository name in place of `taskmanagement`. Publish the contents of `dist/taskmanagement/`.
+
+**Common “not deploying” causes**
+
+| Symptom | Fix |
+|--------|-----|
+| Build fails on the host | Use **Node 18+**; run `npm run build` locally and fix errors first. |
+| Blank page or 404 on refresh | Add SPA **fallback to `index.html`** (Netlify/Vercel configs above). |
+| Assets load from wrong path | Set **`--base-href`** to match your site URL path (GitHub Pages). |
+| Wrong folder published | Publish **`dist/taskmanagement`**, not `dist`. |
+
 ### Unit tests
 
 ```bash
